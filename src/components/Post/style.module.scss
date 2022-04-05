@@ -1,0 +1,16 @@
+.Post{
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  width: 100%;
+  min-height: 25%;
+  border: 1px solid black;
+  background-color: white;
+  .PostBodyWrapper{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+}

@@ -21,3 +21,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+Run DB
+brew services start mongodb-community@5.0
+
+Stop DB
+brew services stop mongodb-community@5.0
+
+node server.js

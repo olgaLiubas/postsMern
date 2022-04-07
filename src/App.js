@@ -17,7 +17,7 @@ function App() {
     getPostsFromDB()
   }, [])
 
-  if(!posts) return (<div>LOADING</div>);
+  if(!posts) return (<div>LOADING, please check if server is working</div>);
 
   return (
     <div className={styles.wall}>

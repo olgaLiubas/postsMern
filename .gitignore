@@ -28,4 +28,5 @@ brew services start mongodb-community@5.0
 Stop DB
 brew services stop mongodb-community@5.0
 
-node server.js
+start back - node server.js
+start front - npm start

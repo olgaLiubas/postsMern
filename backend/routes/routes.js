@@ -23,7 +23,7 @@ router.get('/getPosts', (req, res) => {
 
 
 router.post('/updatePost', (req, res) => {                           // {postId, text, likes}
-  const post = await Post.findOne({_id: req.body.postId})
+  const post = Post.findOne({_id: req.body.postId})
   post.text = req.body.text
   post.likes = req.body.likes
   post.save()
@@ -52,7 +52,7 @@ router.post('/createComment', async (req, res) => {                       // {te
     name: req.body.name,
     text: req.body.text,
   })
-  const post = await Post.findOne({_id: req.body.postId})
+  const post = Post.findOne({_id: req.body.postId})
   post.comments = [...post.comments, newComment._id]
   post.save()
   newComment.save()
@@ -66,7 +66,7 @@ router.post('/createComment', async (req, res) => {                       // {te
 
 
 router.post('/updateComment', (req, res) => {                       // {text, commentId, likes}
-  const comment = await Post.findOne({_id: req.body.postId})
+  const comment = Post.findOne({_id: req.body.postId})
   comment.text = req.body.text
   comment.likes = req.body.likes
   comment.save()

@@ -36,8 +36,7 @@ const CommmentSchema = new mongoose.Schema({
   date:{
     type: Date,
     default: Date.now
-  },
-  post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post'}
+  }
 })
 
 const Post = mongoose.model('Post', PostSchema)

@@ -1,12 +1,22 @@
 import styles from './styles.module.scss';
 import Post from '../Post'
+import Comment from '../Comment'
 
-function PostWrapper() {
+function PostWrapper({post, getPostsFromDB}) {
   return (
     <div className={styles.PostWrapper}>
-      <Post/>
+      <Post
+        post={post}
+        getPostsFromDB={getPostsFromDB}
+      />
       <div className={styles.commentsSection}>
-        <Post/>
+        {post.comments.map(comment => 
+          <Comment
+            comment={comment}
+            postId={post._id}
+            getPostsFromDB={getPostsFromDB}
+          />
+        )}
       </div>
     </div>
   );

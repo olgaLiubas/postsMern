@@ -4,13 +4,22 @@ import PostBody from './PostBody';
 import PostHeader from './PostHeader';
 
 
-function Post() {
+function Post({post, getPostsFromDB}) {
   return (
     <div className={styles.Post}>
-      <LikePanel/>
+      <LikePanel
+        likes={post.likes}
+      />
       <div className={styles.PostBodyWrapper}>
-        <PostHeader/>
-        <PostBody/>
+        <PostHeader
+          username={post.name}
+          created={post.date}
+          id={post._id}
+          getPostsFromDB={getPostsFromDB}
+        />
+        <PostBody
+          text={post.text}
+        />
       </div>
     </div>
   );

@@ -1,21 +1,36 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 import AddUpdatePostInput from './components/AddUpdatePostInput';
 import PostWrapper from './components/PostWrapper'
-import {createPost, getPosts }from './api'
+import { getPosts } from './api'
 
 function App() {
+  const [posts, setPosts] = useState()
 
-  useEffect(async()=> {
-    // console.log(await createPost('http://localhost:4000/app/createPost', {name: "Ostap", text: 'g'}))
-    // console.log(await createPost('http://localhost:4000/app/createComment', {name: "Ostap", text: 'firstComment', postId: '624be9a281d3307959a73bb6'}))
-    console.log(await getPosts())
+  const getPostsFromDB = async () => {
+    const posts = await getPosts()
+    setPosts(posts)
+    console.log('called')
+  }
+  
+  useEffect(()=> {
+    getPostsFromDB()
   }, [])
+
+  if(!posts) return (<div>LOADING</div>);
+
   return (
     <div className={styles.wall}>
-      <PostWrapper/>
-      <PostWrapper/>
-      <AddUpdatePostInput/>
+      {posts.map(post => 
+        <PostWrapper
+          key={post._id}
+          post={post}
+          getPostsFromDB={getPostsFromDB}
+        />
+      )}
+      <AddUpdatePostInput
+        getPostsFromDB={getPostsFromDB}
+      />
     </div>
   );
 }

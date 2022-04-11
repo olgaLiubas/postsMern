@@ -1,24 +1,54 @@
 import styles from "./style.module.scss";
-import LikePanel from './LikePanel/index.js';
-import CommentBody from './CommentBody';
-import CommentHeader from './CommentHeader';
+import LikePanel from '../common/LikePanel/index.js';
+import TextBody from '../common/TextBody';
+import Header from '../common/Header';
+import { useEffect, useState } from "react";
+import { deleteComment, editComment } from "../../api/index";
 
 
-function Comment({comment, postId, getPostsFromDB}) {
+function Comment({comment, getPostsFromDB, setActiveCommentInput}) {
+
+  const [editMode, setEditMode] = useState(false)
+  const [commentText, setCommentText] = useState(comment.text)
+  const [likesAmount, setLikesAmount] = useState(comment.likes)
+  const creationDate = new Date(comment.date).toISOString().split('T')[0]
+
+  const deleteCommentHandler = async() => {
+    await deleteComment(comment._id)
+    await getPostsFromDB()
+  }
+
+  const editCommentHandler = async() => {
+    await editComment(comment._id, commentText, likesAmount)
+    await getPostsFromDB()
+    setEditMode(false)
+  }
+
+  useEffect(()=>{
+    editCommentHandler()
+  },[likesAmount])
+
   return (
-    <div className={styles.Post}>
+    <div className={styles.Comment}>
       <LikePanel
-        likes={comment.likes}
+        likesAmount={likesAmount}
+        setLikesAmount={setLikesAmount}
+        editData={editCommentHandler}
       />
-      <div className={styles.PostBodyWrapper}>
-        <CommentHeader
+      <div className={styles.CommentBodyWrapper}>
+        <Header
           username={comment.name}
-          created={comment.date}
-          id={comment._id}
-          getPostsFromDB={getPostsFromDB}
+          creationDate={creationDate}
+          editMode={editMode}
+          editData={editCommentHandler}
+          deleteData={deleteCommentHandler}
+          setEditMode={setEditMode}
+          setActiveCommentInput={setActiveCommentInput}
         />
-        <CommentBody
-          text={comment.text}
+        <TextBody
+          editMode={editMode}
+          text={commentText}
+          setText={setCommentText}
         />
       </div>
     </div>
@@ -26,3 +56,4 @@ function Comment({comment, postId, getPostsFromDB}) {
 }
 
 export default Comment;
+

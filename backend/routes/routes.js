@@ -2,10 +2,15 @@ const express = require('express')
 const router = express.Router()
 const {Post, Comment} = require('../schemas/schema')
 
+router.get('/getPosts', (req, res) => {
+  Post.find().populate('comments').exec((error, posts) => res.json(posts))
+})
+
 router.post('/createPost', (req, res) => {
   const newPost = new Post({
     name: req.body.name,
-    text: req.body.text
+    text: req.body.text,
+    comments: []
   })
   newPost.save()
   .then(data => {
@@ -16,17 +21,8 @@ router.post('/createPost', (req, res) => {
   })
 })
 
-
-router.get('/getPosts', (req, res) => {
-  Post.find().populate('comments').exec((error, posts) => res.json(posts))
-})
-
-
-router.post('/updatePost', (req, res) => {                           // {postId, text, likes}
-  const post = Post.findOne({_id: req.body.postId})
-  post.text = req.body.text
-  post.likes = req.body.likes
-  post.save()
+router.put('/updatePost', (req, res) => {
+  Post.updateOne({_id: req.body.postId}, {text: req.body.text, likes: req.body.likes})
   .then(data => {
     res.send(200)
   })
@@ -36,7 +32,7 @@ router.post('/updatePost', (req, res) => {                           // {postId,
 })
 
 
-router.post('/deletePost', (req, res) => {                            // {postId}
+router.post('/deletePost', (req, res) => {
   Post.deleteOne({ _id: req.body.postId })
   .then(data => {
     res.send(200)
@@ -47,15 +43,13 @@ router.post('/deletePost', (req, res) => {                            // {postId
 })
 
 
-router.post('/createComment', async (req, res) => {                       // {text, name, postId}
+router.post('/createComment', async (req, res) => {
   const newComment = new Comment({
     name: req.body.name,
     text: req.body.text,
   })
-  const post = Post.findOne({_id: req.body.postId})
-  post.comments = [...post.comments, newComment._id]
-  post.save()
   newComment.save()
+  Post.findOneAndUpdate({_id: req.body.postId}, {$push: {comments: newComment._id}})
   .then(data => {
     res.send(200, data)
   })
@@ -64,14 +58,10 @@ router.post('/createComment', async (req, res) => {                       // {te
   })
 })
 
-
-router.post('/updateComment', (req, res) => {                       // {text, commentId, likes}
-  const comment = Post.findOne({_id: req.body.postId})
-  comment.text = req.body.text
-  comment.likes = req.body.likes
-  comment.save()
+router.put('/updateComment', (req, res) => {
+  Comment.updateOne({_id: req.body.commentId}, {text: req.body.text, likes: req.body.likes})
   .then(data => {
-    res.json(data)
+    res.send(200)
   })
   .catch(error => {
     res.json(error)
@@ -79,7 +69,7 @@ router.post('/updateComment', (req, res) => {                       // {text, co
 })
 
 
-router.post('/deleteComment', (req, res) => {                       // {commentId}
+router.post('/deleteComment', (req, res) => {
   Comment.deleteOne({ _id: req.body.commentId })
   .then(data => {
     res.json(data)
@@ -88,11 +78,6 @@ router.post('/deleteComment', (req, res) => {                       // {commentI
     res.json(error)
   })
 })
-
-
-// router.get('/getComments', (req, res) => {
-//   Comment.find().exec((error, comments) => res.json(comments))
-// })
 
 
 module.exports = router

@@ -1,4 +1,4 @@
-.Post{
+.Comment{
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
@@ -7,7 +7,7 @@
   min-height: 25%;
   border: 1px solid black;
   background-color: white;
-  .PostBodyWrapper{
+  .CommentBodyWrapper{
     width: 90%;
     display: flex;
     flex-direction: column;

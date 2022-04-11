@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
-import AddUpdatePostInput from './components/AddUpdatePostInput';
+import CreateTextArea from './components/common/CreateTextArea';
 import PostWrapper from './components/PostWrapper'
 import { getPosts } from './api'
 
@@ -28,8 +28,9 @@ function App() {
           getPostsFromDB={getPostsFromDB}
         />
       )}
-      <AddUpdatePostInput
+      <CreateTextArea
         getPostsFromDB={getPostsFromDB}
+        postId={false}
       />
     </div>
   );

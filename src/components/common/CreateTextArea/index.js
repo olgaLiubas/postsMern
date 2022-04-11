@@ -40,7 +40,7 @@ function CreateTextArea({getPostsFromDB, postId, setActiveCommentInput}) {
       <button 
         onClick={handleClick}
       >
-        Create
+        CREATE
       </button>
     </div>
   );

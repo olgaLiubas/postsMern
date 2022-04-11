@@ -10,7 +10,6 @@ function App() {
   const getPostsFromDB = async () => {
     const posts = await getPosts()
     setPosts(posts)
-    console.log('called')
   }
   
   useEffect(()=> {

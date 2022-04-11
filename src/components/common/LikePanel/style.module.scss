@@ -5,14 +5,15 @@
   align-items: center;
   width: 10%;
   .Panel{
+    height: 80%;
     width: 50%;
     background-color: rgb(219, 219, 219);
     border-radius: 5%;
     .square{
+      height: 33%;
       display: flex;
       flex-direction: column;
       justify-content: stretch;
-      padding: 25% 0%;
       font-size: 25px;
       font-weight: 700;
       text-align: center;
